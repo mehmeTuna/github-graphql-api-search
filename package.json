@@ -10,11 +10,16 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.15",
+    "@tailwindcss/postcss7-compat": "^2.2.16",
     "@vue/apollo-composable": "^4.0.0-alpha.15",
     "@vue/apollo-option": "^4.0.0-alpha.15",
+    "autoprefixer": "^9.8.7",
     "core-js": "^3.6.5",
     "graphql": "^15.6.0",
     "graphql-tag": "^2.12.5",
+    "lodash": "^4.17.21",
+    "postcss": "^7.0.38",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.16",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"

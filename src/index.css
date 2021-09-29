@@ -1,0 +1,14 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main {
+    background-color: #E8F6EF;
+}
+
+.max-content {
+    max-width: 715px;
+    margin-left: auto;
+    margin-right: auto;
+}
