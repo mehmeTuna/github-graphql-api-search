@@ -17,7 +17,10 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      Authorization: `bearer ${process.env.VUE_APP_GITHUB_PERSONAL_ACCESS_TOKEN}`,
+      Authorization: `bearer ${
+        localStorage.getItem("accessToken") ||
+        process.env.VUE_APP_GITHUB_PERSONAL_ACCESS_TOKEN
+      }`,
     },
   }));
 
