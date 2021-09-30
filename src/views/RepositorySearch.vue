@@ -46,46 +46,14 @@
       </div>
     </div>
     <div class="max-content overflow-y-auto" id="listedItemBody">
-      <RepositoryItem
-        v-for="(repository, index) in repositoryList"
-        :key="index"
-        :name="repository.node.name"
-        :description="repository.node.description"
-        :url="repository.node.url"
-        :stargazerCount="repository.node.stargazerCount"
-        :resourcePath="repository.node.resourcePath"
-        :pushedAt="repository.node.pushedAt"
-        :primaryLanguage="repository.node.primaryLanguage"
-        :watcherCount="repository.node.watchers?.totalCount"
+      <repository-item
+        v-for="repository in repositoryList"
+        :key="repository.node.id"
+        :repository="repository.node"
       />
       <div class="w-full h-2" v-if="loadMoreVisible" id="loadMoreRef"></div>
       <div v-if="loading" class="flex justify-center">
-        <svg
-          class="w-24 h-24"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="xMidYMid"
-        >
-          <circle
-            cx="50"
-            cy="50"
-            fill="none"
-            stroke="#e15b64"
-            stroke-width="10"
-            r="35"
-            stroke-dasharray="164.93361431346415 56.97787143782138"
-          >
-            <animateTransform
-              attributeName="transform"
-              type="rotate"
-              repeatCount="indefinite"
-              dur="1s"
-              values="0 50 50;360 50 50"
-              keyTimes="0;1"
-            ></animateTransform>
-          </circle>
-        </svg>
+        <img class="w-24 h-24" :src="require('@/assets/loading.svg')" />
       </div>
     </div>
   </div>
@@ -106,15 +74,15 @@ export default {
     const store = useStore();
 
     const repositoryList = computed({
-      get: () => store.getters.searchRepositoryList,
+      get: () => store.getters.searchRepoList,
     });
 
     const loading = computed({
-      get: () => store.getters.searchRepositoryLoading,
+      get: () => store.getters.searchRepoLoading,
     });
 
     const paginate = computed({
-      get: () => store.getters.searchRepositoryPaginate,
+      get: () => store.getters.searchRepoPaginate,
     });
 
     const search = () => {
@@ -122,12 +90,11 @@ export default {
         return;
       }
 
-      store.commit("resetSearchRepositoryPaginate");
-      store.dispatch("fetchSearchRepository", searchText.value);
+      store.dispatch("fetchSearchRepo", searchText.value);
     };
 
     const loadMoreData = () => {
-      store.dispatch("fetchSearchRepository", searchText.value);
+      store.dispatch("fetchSearchRepoLoadMore", searchText.value);
     };
 
     watch(loadMoreVisible, (val) => {
