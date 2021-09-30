@@ -22,6 +22,20 @@ const searchRepository = gql`
             watchers {
               totalCount
             }
+            viewerHasStarred
+            viewerSubscription
+            licenseInfo {
+              name
+            }
+            repositoryTopics(first: 10) {
+              edges {
+                node {
+                  topic {
+                    name
+                  }
+                }
+              }
+            }
           }
         }
       }
