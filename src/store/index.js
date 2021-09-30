@@ -5,13 +5,14 @@ import { searchRepository } from "@/graphql/queries";
 import {
   removeStarFromRepository,
   starTheRepository,
-} from "@/graphql/mutation";
+  updateViewerSubscription,
+} from "@/graphql/mutations";
 
 const SEARCH_RESULT_COUNT = 10;
 
 export default createStore({
   state: {
-    searchRepository: {
+    searchRepo: {
       result: [],
       loading: null,
       error: null,
@@ -22,52 +23,94 @@ export default createStore({
     },
   },
   actions: {
-    async fetchSearchRepository({ state, commit }, queryText) {
-      commit("updateSearchRepositoryLoading", true);
-      let variables = {
-        query: queryText,
-        first: SEARCH_RESULT_COUNT,
-      };
-      const { paginate } = state.searchRepository;
+    async fetchSearchRepo({ commit }, queryText) {
+      commit("updateSearchRepoLoading", true);
+      commit("resetSearchRepoPaginate");
 
-      if (paginate.endCursor !== "") {
-        variables = Object.assign({}, variables, {
-          after: paginate.endCursor,
-        });
-      }
       try {
         const result = await apolloClient.query({
           query: searchRepository,
-          variables,
+          variables: {
+            query: queryText,
+            first: SEARCH_RESULT_COUNT,
+          },
         });
-        commit("updateSearchRepository", result.data.search.edges);
-        commit("updateSearchRepositoryPaginate", result.data.search.pageInfo);
+        commit("updateSearchRepoList", result.data.search.edges);
+        commit("updateSearchRepoPaginate", result.data.search.pageInfo);
       } finally {
-        commit("updateSearchRepositoryLoading", false);
+        commit("updateSearchRepoLoading", false);
       }
     },
-    async fetchStarRepository(_, starrableId) {
+    async fetchSearchRepoLoadMore({ state, commit }, queryText) {
+      commit("updateSearchRepoLoading", true);
+
+      const { paginate } = state.searchRepo;
+
+      try {
+        const result = await apolloClient.query({
+          query: searchRepository,
+          variables: {
+            query: queryText,
+            first: SEARCH_RESULT_COUNT,
+            after: paginate.endCursor,
+          },
+        });
+        commit("updateSearchRepoListMore", result.data.search.edges);
+        commit("updateSearchRepoPaginate", result.data.search.pageInfo);
+      } finally {
+        commit("updateSearchRepoLoading", false);
+      }
+    },
+    async fetchStarRepo({ commit }, starrableId) {
       const result = await apolloClient.mutate({
         mutation: starTheRepository,
         variables: {
           starrableId,
         },
       });
+
+      commit("updateRepoViewerHasStarred", {
+        repoId: starrableId,
+        status: true,
+      });
       return result;
     },
-    async fetchRemoveStarRepository(_, starrableId) {
+    async fetchRemoveStarRepo({ commit }, starrableId) {
       const result = await apolloClient.mutate({
         mutation: removeStarFromRepository,
         variables: {
           starrableId,
         },
       });
+      commit("updateRepoViewerHasStarred", {
+        repoId: starrableId,
+        status: false,
+      });
+      return result;
+    },
+    async fetchUpdateViewerSubscription({ commit }, { subscribableId, state }) {
+      const result = await apolloClient.mutate({
+        mutation: updateViewerSubscription,
+        variables: {
+          subscribableId,
+          state,
+        },
+      });
+
+      commit("updateRepoViewerSubscription", { subscribableId, state });
+
       return result;
     },
   },
   mutations: {
-    resetSearchRepositoryPaginate(state) {
-      state.searchRepository.paginate = Object.assign(
+    updateRepoViewerSubscription(state, payload) {
+      console.log("payload", payload);
+      state.searchRepo.result.find(
+        (repo) => repo.node.id === payload.subscribableId
+      ).node.viewerSubscription = payload.state;
+    },
+    resetSearchRepoPaginate(state) {
+      state.searchRepo.paginate = Object.assign(
         {},
         {
           hasNextPage: false,
@@ -75,32 +118,33 @@ export default createStore({
         }
       );
     },
-    updateSearchRepositoryLoading(state, payload) {
-      state.searchRepository.loading = payload;
+    updateSearchRepoLoading(state, payload) {
+      state.searchRepo.loading = payload;
     },
-    updateSearchRepository(state, payload) {
-      if (state.searchRepository.paginate.endCursor !== "") {
-        state.searchRepository.result = [
-          ...state.searchRepository.result,
-          ...payload,
-        ];
-        return;
-      }
-      state.searchRepository.result = payload;
+    updateSearchRepoList(state, payload) {
+      state.searchRepo.result = JSON.parse(JSON.stringify(payload));
     },
-    updateSearchRepositoryPaginate(state, payload) {
-      state.searchRepository.paginate = Object.assign({}, payload);
+    updateSearchRepoListMore(state, payload) {
+      state.searchRepo.result = [...state.searchRepo.result, ...payload];
+    },
+    updateSearchRepoPaginate(state, payload) {
+      state.searchRepo.paginate = Object.assign({}, payload);
+    },
+    updateRepoViewerHasStarred(state, { repoId, status }) {
+      state.searchRepo.result.find(
+        (repo) => repo.node.id == repoId
+      ).node.viewerHasStarred = status;
     },
   },
   getters: {
-    searchRepositoryList(state) {
-      return state.searchRepository.result;
+    searchRepoList(state) {
+      return state.searchRepo.result;
     },
-    searchRepositoryLoading(state) {
-      return state.searchRepository.loading;
+    searchRepoLoading(state) {
+      return state.searchRepo.loading;
     },
-    searchRepositoryPaginate(state) {
-      return state.searchRepository.paginate;
+    searchRepoPaginate(state) {
+      return state.searchRepo.paginate;
     },
   },
   modules: {},
