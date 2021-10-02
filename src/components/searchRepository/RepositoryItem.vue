@@ -12,6 +12,7 @@
         </div>
         <div class="flex flex-direction justify-center items-start">
           <div
+            id="starRepo"
             class="
               flex
               justify-center
@@ -47,7 +48,6 @@
               cursor-pointer
               p-1
             "
-            @click="watchUpdate"
           >
             <span class="w-4 h-4 mr-1">
               <img
@@ -60,6 +60,7 @@
             </span>
             <p class="text-md">
               <select
+                id="watchRepo"
                 class="appearance-none bg-transparent"
                 @change="updateViewerSubscription"
               >

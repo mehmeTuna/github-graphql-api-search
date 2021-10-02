@@ -121,6 +121,8 @@ export default {
       }
 
       store.dispatch("fetchSearchRepo", searchText.value);
+
+      nextTick(() => window.scroll(0, 0));
     };
 
     const loadMoreRepo = () => {
