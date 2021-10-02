@@ -19,7 +19,7 @@
       "
     >
       <div
-        class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"
+        class="fixed inset-0 main bg-opacity-50 transition-opacity"
         aria-hidden="true"
       ></div>
 
