@@ -1,4 +1,11 @@
-# vue-github-api
+# Searching and starring public repos with Github graphql api
+
+
+## Home 
+![Home Screen](./repo-img/search.png)
+
+## Register Token
+![Register Token](./repo-img/register-token.png)
 
 ## Project setup
 ```
