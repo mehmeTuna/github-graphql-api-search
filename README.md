@@ -1,7 +1,7 @@
 # Searching and starring public repos with Github graphql api
 
 
-### DEMO: [`https://vue-github-graphql-api-search.herokuapp.com/`](https://vue-github-graphql-api-search.herokuapp.com/)
+### DEMO: [`https://github-graphql-api-search.herokuapp.com/`](https://github-graphql-api-search.herokuapp.com/)
 
 ## Home 
 ![Home Screen](./repo-img/search.png)
