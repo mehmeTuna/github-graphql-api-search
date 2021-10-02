@@ -133,6 +133,9 @@
 <script>
 import { reactive, toRefs, watch } from "vue";
 import { useStore } from "vuex";
+import moment from "moment";
+
+import starCountFormat from "@/utils/starCountFormat";
 
 export default {
   name: "repositoryItem",
@@ -154,15 +157,15 @@ export default {
       repo.name = repository.name;
       repo.description = repository.description;
       repo.url = repository.url;
-      repo.stargazerCount = repository.stargazerCount;
+      repo.stargazerCount = starCountFormat(repository.stargazerCount);
       repo.resourcePath = repository.resourcePath.slice(
         1,
         repository.resourcePath.length
       );
-      repo.pushedAt = repository.pushedAt;
+      repo.pushedAt = moment(repository.pushedAt).format("ll");
       repo.primaryLanguageName = repository.primaryLanguage?.name || null;
       repo.primaryLanguageColor = repository.primaryLanguage?.color || null;
-      repo.watchersCount = repository.watchers.totalCount;
+      repo.watchersCount = starCountFormat(repository.watchers.totalCount);
       repo.viewerHasStarred = repository.viewerHasStarred;
       repo.viewerSubscription = repository.viewerSubscription;
       repo.licenseInfoName = repository.licenseInfo?.name || null;
