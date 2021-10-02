@@ -1,30 +1,30 @@
 import { flushPromises, mount } from "@vue/test-utils";
-import { createStore } from "vuex";
 
 import RepositorySearch from "@/views/RepositorySearch";
 
 const search = jest.fn();
-const store = createStore({
-  state: {},
-  actions: {},
-  mutations: {
-    fetchSearchRepo: jest.fn(),
+const $store = {
+  state: {
+    count: 25,
   },
+  actions: jest.fn(),
   getters: {
-    searchRepoList: jest.fn(),
-    searchRepoLoading: jest.fn(),
-    searchRepoPaginate: jest.fn(),
+    repoSearchList: jest.fn(),
+    repoSearchLoading: jest.fn(),
+    repoSearchPagination: jest.fn(),
   },
-  modules: {},
-});
+  commit: jest.fn(),
+};
 
 describe("Repository Search View", () => {
-  let wrapper = null;
+  let wrapper;
 
   beforeEach(() => {
     wrapper = mount(RepositorySearch, {
       global: {
-        plugins: [[store]],
+        provide: {
+          store: $store,
+        },
         mocks: {
           search,
         },

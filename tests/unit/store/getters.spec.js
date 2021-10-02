@@ -2,7 +2,7 @@ import { expect } from "chai";
 import getters from "@/store/getters";
 
 describe("getters", () => {
-  it("searchRepoList", () => {
+  it("repoSearchList", () => {
     const state = {
       searchRepo: {
         result: [
@@ -13,22 +13,22 @@ describe("getters", () => {
       },
     };
 
-    const result = getters.searchRepoList(state);
+    const result = getters.repoSearchList(state);
 
     expect(result).to.equal(state.searchRepo.result);
   });
-  it("searchRepoLoading", () => {
+  it("repoSearchLoading", () => {
     const state = {
       searchRepo: {
         loading: true,
       },
     };
 
-    const result = getters.searchRepoLoading(state);
+    const result = getters.repoSearchLoading(state);
 
     expect(result).to.equal(state.searchRepo.loading);
   });
-  it("searchRepoPaginate", () => {
+  it("repoSearchPagination", () => {
     const state = {
       searchRepo: {
         paginate: {
@@ -38,7 +38,7 @@ describe("getters", () => {
       },
     };
 
-    const result = getters.searchRepoPaginate(state);
+    const result = getters.repoSearchPagination(state);
 
     expect(result).to.equal(state.searchRepo.paginate);
   });
