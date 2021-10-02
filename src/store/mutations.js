@@ -1,17 +1,18 @@
 export default {
   updateRepoViewerSubscription(state, payload) {
-    state.searchRepo.result.find(
+    const repo = state.searchRepo.result.find(
       (repo) => repo.node.id === payload.subscribableId
-    ).node.viewerSubscription = payload.state;
+    );
+
+    if (repo) {
+      Object.assign(repo.node, { viewerSubscription: payload.state });
+    }
   },
   resetSearchRepoPaginate(state) {
-    state.searchRepo.paginate = Object.assign(
-      {},
-      {
-        hasNextPage: false,
-        endCursor: "",
-      }
-    );
+    Object.assign(state.searchRepo.paginate, {
+      hasNextPage: false,
+      endCursor: "",
+    });
   },
   updateSearchRepoLoading(state, payload) {
     state.searchRepo.loading = payload;
@@ -23,11 +24,13 @@ export default {
     state.searchRepo.result = [...state.searchRepo.result, ...payload];
   },
   updateSearchRepoPaginate(state, payload) {
-    state.searchRepo.paginate = Object.assign({}, payload);
+    Object.assign(state.searchRepo.paginate, payload);
   },
   updateRepoViewerHasStarred(state, { repoId, status }) {
-    state.searchRepo.result.find(
-      (repo) => repo.node.id == repoId
-    ).node.viewerHasStarred = status;
+    const repo = state.searchRepo.result.find((repo) => repo.node.id == repoId);
+
+    if (repo) {
+      Object.assign(repo.node, { viewerHasStarred: status });
+    }
   },
 };

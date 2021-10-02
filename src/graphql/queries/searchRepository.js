@@ -1,6 +1,5 @@
 import gql from "graphql-tag";
 
-//repoları arar
 const searchRepository = gql`
   query Search($query: String!, $first: Int!, $after: String) {
     search(type: REPOSITORY, query: $query, first: $first, after: $after) {

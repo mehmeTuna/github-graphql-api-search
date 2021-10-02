@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="flex justify-start items-start py-3 px-2"
-    style="border-bottom-width: 1px; border-bottom-color: #d0d7de"
-  >
+  <div class="flex justify-start items-start py-3 px-2 repo-border">
     <div class="pt-1">
       <img class="w-4 h-4 mr-2" :src="require('@/assets/book.svg')" />
     </div>

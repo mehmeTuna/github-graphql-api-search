@@ -104,15 +104,15 @@ export default {
     const store = useStore();
 
     const repositoryList = computed({
-      get: () => store.getters.searchRepoList,
+      get: () => store.getters.repoSearchList,
     });
 
     const loading = computed({
-      get: () => store.getters.searchRepoLoading,
+      get: () => store.getters.repoSearchLoading,
     });
 
     const paginate = computed({
-      get: () => store.getters.searchRepoPaginate,
+      get: () => store.getters.repoSearchPagination,
     });
 
     const search = () => {
@@ -123,7 +123,7 @@ export default {
       store.dispatch("fetchSearchRepo", searchText.value);
     };
 
-    const loadMoreData = () => {
+    const loadMoreRepo = () => {
       store.dispatch("fetchSearchRepoLoadMore", searchText.value);
     };
 
@@ -136,7 +136,7 @@ export default {
         const observer = new IntersectionObserver((entries) => {
           const firstEntry = entries[0];
           if (firstEntry.isIntersecting) {
-            loadMoreData();
+            loadMoreRepo();
           }
         });
 

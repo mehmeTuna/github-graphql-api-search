@@ -4,11 +4,16 @@
 @tailwind utilities;
 
 .main {
-    background-color: #E8F6EF;
+    background-color: #f7f7f8;
 }
 
 .max-content {
     max-width: 715px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.repo-border {
+    border-bottom-width: 1px;
+    border-bottom-color: #d0d7de
 }

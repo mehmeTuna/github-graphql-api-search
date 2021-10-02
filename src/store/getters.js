@@ -1,11 +1,11 @@
 export default {
-  searchRepoList(state) {
+  repoSearchList(state) {
     return state.searchRepo.result;
   },
-  searchRepoLoading(state) {
+  repoSearchLoading(state) {
     return state.searchRepo.loading;
   },
-  searchRepoPaginate(state) {
+  repoSearchPagination(state) {
     return state.searchRepo.paginate;
   },
 };
